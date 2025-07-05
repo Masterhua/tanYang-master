@@ -5,6 +5,11 @@ import { render } from '/@/utils/common/renderUtils';
 import { getWeekMonthQuarterYear } from '/@/utils';
 //列表数据
 export const columns: BasicColumn[] = [
+  {
+    title: '配种记录ID',
+    align:"center",
+    dataIndex: 'id'
+   },
    {
     title: '公畜 ID',
     align:"center",
