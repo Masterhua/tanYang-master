@@ -33,7 +33,9 @@ export const searchFormSchema: FormSchema[] = [
       label: "适用阶段（幼崽 / 育肥 / 成年）",
       field: 'applicableStage',
       component: 'JSelectMultiple',
-      //colProps: {span: 6},
+    componentProps:{
+      dictCode:"peifang"
+    },
  	},
 	{
       label: "配方说明",

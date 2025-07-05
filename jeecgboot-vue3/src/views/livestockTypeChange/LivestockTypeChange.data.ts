@@ -57,6 +57,7 @@ export const searchFormSchema: FormSchema[] = [
       field: 'oldType',
       component: 'JSelectMultiple',
       componentProps:{
+        dictCode:"leibie"
       },
       //colProps: {span: 6},
  	},
@@ -65,6 +66,7 @@ export const searchFormSchema: FormSchema[] = [
       field: 'newType',
       component: 'JSelectMultiple',
       componentProps:{
+        dictCode:"leibie"
       },
       //colProps: {span: 6},
  	},

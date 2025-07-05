@@ -48,8 +48,9 @@ export const searchFormSchema: FormSchema[] = [
       label: "类型（场 / 棚 / 栏）",
       field: 'type',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+    componentProps:{
+      dictCode:"Changpengway"
+    },
       //colProps: {span: 6},
  	},
 	{

@@ -1,45 +1,29 @@
 package org.jeecg.modules.demo.stockIn.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
+import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.system.query.QueryRuleEnum;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.stockIn.entity.StockIn;
 import org.jeecg.modules.demo.stockIn.service.IStockInService;
-import org.jeecg.modules.demo.inventory.entity.Inventory;
-import org.jeecg.modules.demo.inventory.service.IInventoryService;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.def.NormalExcelConstants;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
-import org.jeecg.common.system.base.controller.JeecgController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson.JSON;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import org.jeecg.common.aspect.annotation.AutoLog;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -88,14 +72,30 @@ public class StockInController extends JeecgController<StockIn, IStockInService>
 	@Operation(summary="入库记录表-添加")
 	@RequiresPermissions("stockIn:stock_in:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody StockIn stockIn) {
+	public Result<Map<String, Object>> add(@RequestBody StockIn stockIn) {
+		Result<Map<String, Object>> result = new Result<>();
+		Map<String, Object> data = new HashMap<>();
+
 		try {
-			stockInService.handleStockIn(stockIn);
-			return Result.OK("添加成功！");
+			// 调用服务层处理入库逻辑，获取警告信息
+			String warningMessage = stockInService.handleStockIn(stockIn);
+
+			// 设置返回数据
+			data.put("stockIn", stockIn);
+			if (warningMessage != null) {
+				data.put("warning", warningMessage);
+				result.setMessage("添加成功，但库存已超过警戒值");
+			} else {
+				result.setMessage("添加成功");
+			}
+
+			result.setSuccess(true);
+			result.setResult(data);
 		} catch (Exception e) {
-			log.error("添加入库记录失败", e);
-			return Result.error("添加入库记录失败: " + e.getMessage());
+			log.error(e.getMessage(), e);
+			result.error500("操作失败：" + e.getMessage());
 		}
+		return result;
 	}
 	
 	/**

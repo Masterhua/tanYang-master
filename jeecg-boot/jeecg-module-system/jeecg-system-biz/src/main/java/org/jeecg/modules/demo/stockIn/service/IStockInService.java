@@ -11,5 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStockInService extends IService<StockIn> {
 
-    void handleStockIn(StockIn stockIn) throws Exception;
+    String handleStockIn(StockIn stockIn) throws Exception;
+
 }

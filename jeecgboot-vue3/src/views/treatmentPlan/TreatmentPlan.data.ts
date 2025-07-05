@@ -42,8 +42,9 @@ export const searchFormSchema: FormSchema[] = [
       label: "疾病类型",
       field: 'diseaseType',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+    componentProps:{
+      dictCode:"jibingWay"
+    },
       //colProps: {span: 6},
  	},
 	{
@@ -62,16 +63,18 @@ export const searchFormSchema: FormSchema[] = [
       label: "药物治疗种类",
       field: 'medicationType',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+    componentProps:{
+      dictCode:"medicationZhiliaoCata"
+    },
       //colProps: {span: 6},
  	},
 	{
       label: "使用方式",
       field: 'usageMethod',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+    componentProps:{
+      dictCode:"shiyongWay"
+    },
       //colProps: {span: 6},
  	},
 	{

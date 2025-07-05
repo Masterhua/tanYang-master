@@ -1,5 +1,6 @@
 package org.jeecg.modules.demo.saleRecordDetail.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +53,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class SaleRecordDetailController extends JeecgController<SaleRecordDetail, ISaleRecordDetailService> {
 	@Autowired
 	private ISaleRecordDetailService saleRecordDetailService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -74,7 +75,7 @@ public class SaleRecordDetailController extends JeecgController<SaleRecordDetail
 		IPage<SaleRecordDetail> pageList = saleRecordDetailService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -87,13 +88,23 @@ public class SaleRecordDetailController extends JeecgController<SaleRecordDetail
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody SaleRecordDetail saleRecordDetail) {
 		try {
+			if (saleRecordDetail.getQuantity() == null) {
+				saleRecordDetail.setQuantity(1);
+			}
+			if (saleRecordDetail.getAmount() == null) {
+				BigDecimal unitPrice = saleRecordDetail.getUnitPrice();
+				Integer quantity = saleRecordDetail.getQuantity();
+				if (unitPrice != null && quantity != null) {
+					saleRecordDetail.setAmount(unitPrice.multiply(new BigDecimal(quantity)));
+				}
+			}
 			saleRecordDetailService.changeStatus(saleRecordDetail);
 			return Result.OK("添加成功！");
 		} catch (Exception e) {
 			return Result.error("添加失败"+ e.getMessage());
 		}
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -108,7 +119,7 @@ public class SaleRecordDetailController extends JeecgController<SaleRecordDetail
 		saleRecordDetailService.updateById(saleRecordDetail);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -123,7 +134,7 @@ public class SaleRecordDetailController extends JeecgController<SaleRecordDetail
 		saleRecordDetailService.removeById(id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -138,7 +149,7 @@ public class SaleRecordDetailController extends JeecgController<SaleRecordDetail
 		this.saleRecordDetailService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *

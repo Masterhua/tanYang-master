@@ -53,8 +53,9 @@ export const searchFormSchema: FormSchema[] = [
       label: "销售类型（饲料 / 药品 / 畜只）",
       field: 'type',
       component: 'JSelectMultiple',
-      componentProps:{
-      },
+    componentProps:{
+      dictCode:"xiangshouWay"
+    },
       //colProps: {span: 6},
  	},
 	{

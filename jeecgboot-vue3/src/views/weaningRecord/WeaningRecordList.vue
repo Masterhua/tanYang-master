@@ -14,15 +14,9 @@
       <BasicTable @register="registerTable" :rowSelection="rowSelection">
         <template #tableTitle>
           <div class="livestock-btn-group">
-            <a-button
-              type="primary"
-              v-auth="'weaningRecord:weaning_record:add'"
-              @click="handleAdd"
-              preIcon="ant-design:plus-outlined"
-            >
+            <a-button type="primary" v-auth="'weaningRecord:weaning_record:add'" @click="handleAdd" preIcon="ant-design:plus-outlined">
               新增
             </a-button>
-
             <a-button
               type="primary"
               style="background: #66bb6a; border: none"

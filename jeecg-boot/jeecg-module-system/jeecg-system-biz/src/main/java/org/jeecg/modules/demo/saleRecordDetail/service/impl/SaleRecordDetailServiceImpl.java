@@ -31,6 +31,7 @@ public class SaleRecordDetailServiceImpl extends ServiceImpl<SaleRecordDetailMap
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void changeStatus(SaleRecordDetail saleRecordDetail) throws Exception {
+
         save(saleRecordDetail);
         String livestockId = saleRecordDetail.getLivestockId();
         Livestock livestock = livestockService.lambdaQuery()

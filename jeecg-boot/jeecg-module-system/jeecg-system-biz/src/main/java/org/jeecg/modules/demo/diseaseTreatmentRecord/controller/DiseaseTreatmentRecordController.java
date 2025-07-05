@@ -114,6 +114,8 @@ public class DiseaseTreatmentRecordController extends JeecgController<DiseaseTre
 		Subject subject = SecurityUtils.getSubject();
 		LoginUser loginUser = (LoginUser) subject.getPrincipal();
 		String username = loginUser.getUsername();
+		// 保存治疗记录
+		diseaseTreatmentRecordService.save(diseaseTreatmentRecord);
 
 		// 获取治疗方案 ID
 		String treatmentPlanId = diseaseTreatmentRecord.getTreatmentPlanId();
@@ -158,8 +160,7 @@ public class DiseaseTreatmentRecordController extends JeecgController<DiseaseTre
 			stockOut.setNote("治疗自动出库记录");
 			stockOutService.save(stockOut);
 		}
-		// 保存治疗记录
-		diseaseTreatmentRecordService.save(diseaseTreatmentRecord);
+
 		return Result.OK("添加成功并同步扣减药品库存！");
 	}
 

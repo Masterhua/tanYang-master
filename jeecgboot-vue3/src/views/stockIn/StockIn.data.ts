@@ -180,6 +180,7 @@ export const formSchema: FormSchema[] = [
                  { required: true, message: '请输入总价!'},
           ];
      },
+    show: false,
   },
   {
     label: '经销商 ID',
